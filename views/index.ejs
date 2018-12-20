@@ -15,7 +15,7 @@
       <button id="submitBtn">提交</button>
     </div>
 
-    <div class="test"></div>
+    <div id="dataList"></div>
 
     <script>
       $(function() {
@@ -54,10 +54,27 @@
           if(data.code === 200) {
             var html = '', list = data.result;
             for(var i = 0; i < list.length; i++) {
-              html += '<div>这是第' + (i+1) + '条数据：标题为 ' + list[i].title + '，内容为 ' + list[i].content + '</div>'
+              html += '<div class="item" data-id="' + list[i]._id + '"><div>这是第' + (i+1) + '条数据：标题为 <span class="title">' + list[i].title + '</span>，内容为 <span class="content">' + list[i].content + '</span></div><button class="dele">删除</button><button class="change">修改</button><hr></div>'
             }
-            $('.test').empty().append(html);
+            $('#dataList').empty().append(html);
+            deleList();
           }
+        })
+      }
+
+      function deleList() {
+        $('#dataList').find('.dele').click(function() {
+          var title = $(this).parents('.item').find('.title').text();
+          console.log('title', title);
+          $.get('/api/deletest', {
+            title: title
+          }, function(data) {
+            console.log('---Delete---', data);
+            if(data.code === 200) {
+              $(this).parents('.item').remove();
+              alert('删除成功');
+            }
+          })
         })
       }
       

@@ -1,7 +1,8 @@
 const MongoClient = require('mongodb').MongoClient
 const settings = require('./settings')
 const dbName = settings.nickname
-// 链接数据库，没有则自动创建
+
+// 连接数据库，没有则自动创建
 function _connectDB(callback) {
   let url = settings.dbUrl
   MongoClient.connect(url, function (err, client) {
@@ -59,6 +60,19 @@ exports.find = function (collectionName, queryJson, callback) {
 }
 
 // 删除数据
+exports.deleteOne = function(collectionName, json, callback) {
+  _connectDB(function(err, client) {
+    client.db(dbName).collection(collectionName).deleteOne(json, function(err, results) {
+      if(err) {
+        callback(err, null)
+        client.close()
+        return
+      }
+      callback(err, results)
+      client.close()
+    })
+  })
+}
 exports.deleteMany = function(collectionName, json, callback) {
   _connectDB(function(err, client) {
     client.db(dbName).collection(collectionName).deleteMany(json, function(err, results) {

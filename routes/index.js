@@ -14,4 +14,6 @@ router.get('/api/test', api.test);
 
 router.post('/api/addtest', api.addtest);
 
+router.get('/api/deletest', api.deletest);
+
 module.exports = router;

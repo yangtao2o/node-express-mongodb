@@ -38,3 +38,23 @@ exports.addtest = function (req, res, next) {
     })
   })
 }
+
+exports.deletest = function(req, res, next) {
+  let newData = {
+    'title': req.body.title
+  };
+  // 删除
+  db.deleteOne('mytest', newData, function(err, result) {
+    console.log('mytest');
+    if(err) {
+      return res.json({
+        'code': 401,
+        'message': 'test删除失败'
+      })
+    }
+    return res.json({
+      'code': 200,
+      'message': 'test删除成功'
+    })
+  })
+}
