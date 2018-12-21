@@ -17,11 +17,14 @@
 
     <div id="dataList"></div>
 
+    <div>
+      图片上传：<input type="file" name="fileToUpload" id="fileToUpload" class="fileupload">
+    </div>
+    <img style="width: 100px;">
+
     <script>
       $(function() {
         getList();
-
-        
 
         $('#submitBtn').click(function() {
           var $title = $('.title').val(), 
@@ -55,7 +58,36 @@
           });
         })
 
+        // Upload
+        $('#fileToUpload').change(function(event) {
+          var $this = $(this);
+
+          if($this.val().length) {
+            var fileName = $this.val();
+            var extension = fileName.substring(fileName.lastIndexOf('.'), fileName.length).toLowerCase();
+
+            if(extension === '.jpg' || extension === '.png') {
+              var data = new FormData();
+              data.append('fulAvatar', $('#fileToUpload')[0].files[0]);
+              $.ajax({
+                url: '/api/uploadimg',
+                type: 'post',
+                data: data,
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function(data) {
+                  console.log('---UPLOAD IMG---', data);
+                },
+                error: function(err) {
+                  console.log('---ERROR---', err);
+                }
+              })
+            }
+          }
+        })
       })
+      
       function getList() {
         $.get('/api/test', {}, function(data) {
           console.log('---data', data)

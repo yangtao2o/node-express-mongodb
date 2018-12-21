@@ -4,3 +4,4 @@
 ## 实例索引
 * [网站初始化，实现 GET 和 POST 的 Ajax 请求](./doc/doc-01-init.md)
 * [登录模块](./doc/doc-02-login.md)
+* [上传图片模块](./doc/doc-02-login.md)
