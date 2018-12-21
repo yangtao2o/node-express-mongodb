@@ -21,6 +21,8 @@
       $(function() {
         getList();
 
+        
+
         $('#submitBtn').click(function() {
           var $title = $('.title').val(), 
             $content = $('.content').val();
@@ -32,7 +34,13 @@
             alert('请填写内容');
             return false;
           }
-
+          // login Status Test
+          $.post('/api/login', {
+            user: 'test',
+            pwd: 'test'
+          }, function(data) {
+            console.log('---logon---', data)
+          })
           $.post('/api/addtest', {
             title: $title,
             content: $content
@@ -42,7 +50,7 @@
               alert('提交成功');
               getList();
             } else {
-              alert('提交失败');
+              alert(data.message);
             }
           });
         })

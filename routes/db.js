@@ -5,7 +5,7 @@ const dbName = settings.nickname
 // 连接数据库，没有则自动创建
 function _connectDB(callback) {
   let url = settings.dbUrl
-  MongoClient.connect(url, function (err, client) {
+  MongoClient.connect(url, { useNewUrlParser: true }, function (err, client) {
     if(err) {
       callback(err, null);
       return
@@ -105,5 +105,20 @@ exports.updateMany = function(collectionName, jsonOld, jsonNew, callback) {
         db.close()
       }
     )
+  })
+}
+
+// 查找单个数据
+exports.findOne = function(collectionName, queryJson, callback) {
+  _connectDB(function(err, client) {
+    client.db(dbName).collection(collectionName).findOne(queryJson, function(err, results) {
+      if(err) {
+        callback(err, null)
+        db.close()
+        return
+      }
+      callback(err, results)
+      db.close()
+    })
   })
 }
